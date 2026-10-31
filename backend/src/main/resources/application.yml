@@ -1,0 +1,69 @@
+spring:
+  application:
+    name: bookwise-ai
+
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    hikari:
+      # pgvector >= 0.8: keep scanning the HNSW index until enough rows pass the
+      # user_id/book_id metadata filter (otherwise filtered searches can come back short).
+      connection-init-sql: SET hnsw.iterative_scan = relaxed_order
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+
+  flyway:
+    enabled: true
+
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 55MB
+
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      chat:
+        options:
+          model: ${CHAT_MODEL:gpt-4.1-mini}
+      embedding:
+        options:
+          model: ${EMBEDDING_MODEL:text-embedding-3-small}
+    vectorstore:
+      pgvector:
+        # The vector_store table is created by Flyway (V2), not by Spring AI,
+        # so its dimensions/indexes are under our control.
+        initialize-schema: false
+        index-type: HNSW
+        distance-type: COSINE_DISTANCE
+        dimensions: ${EMBEDDING_DIMENSIONS:1536}
+
+bookwise:
+  jwt:
+    # Must be at least 32 characters. Set JWT_SECRET in every real environment.
+    secret: ${JWT_SECRET:dev-only-secret-change-me-please-0123456789}
+    expiry: 12h
+  storage:
+    dir: ${STORAGE_DIR:./data/books}
+    max-file-size-bytes: 52428800
+    max-pages: 3000
+  rag:
+    top-k: 6
+    similarity-threshold: 0.25
+    chunk-size-tokens: 500
+    history-messages: 6
+  cors:
+    allowed-origins: ${CORS_ORIGINS:http://localhost:5173}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+
+server:
+  port: 8080

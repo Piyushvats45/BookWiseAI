@@ -1,0 +1,106 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif;
+  --font-read: 'Literata', Georgia, serif;
+
+  --color-ink: #14213d;
+  --color-paper: #f5f6f9;
+  --color-line: #dde1ea;
+  --color-slate: #5b6478;
+  --color-signal: #2f5bea;
+  --color-signal-dark: #2447c0;
+  --color-mark: #ffe45c;
+  --color-danger: #b42318;
+  --color-ok: #17803d;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-signal);
+  outline-offset: 2px;
+}
+
+/* The highlighter: the one recurring visual motif. It marks retrieved passages and citation numbers. */
+.mark {
+  background: linear-gradient(transparent 8%, var(--color-mark) 8%, var(--color-mark) 92%, transparent 92%);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  padding: 0 0.15em;
+}
+
+/* Answers are set like book text. */
+.answer {
+  font-family: var(--font-read);
+  font-size: 1.0625rem;
+  line-height: 1.75;
+}
+.answer p + p,
+.answer ul + p,
+.answer ol + p,
+.answer p + ul,
+.answer p + ol,
+.answer pre + p,
+.answer p + pre {
+  margin-top: 0.9em;
+}
+.answer ul {
+  list-style: disc;
+  padding-left: 1.4em;
+}
+.answer ol {
+  list-style: decimal;
+  padding-left: 1.4em;
+}
+.answer li + li {
+  margin-top: 0.35em;
+}
+.answer strong {
+  font-weight: 650;
+}
+.answer h1,
+.answer h2,
+.answer h3 {
+  font-family: var(--font-sans);
+  font-weight: 650;
+  margin-top: 1.2em;
+  margin-bottom: 0.3em;
+}
+.answer code {
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: 0.88em;
+  background: #e9ecf3;
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+}
+.answer pre {
+  background: #e9ecf3;
+  padding: 0.8rem 1rem;
+  border-radius: 6px;
+  overflow-x: auto;
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+.answer pre code {
+  background: none;
+  padding: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

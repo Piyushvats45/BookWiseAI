@@ -1,0 +1,20 @@
+services:
+  db:
+    image: pgvector/pgvector:pg17
+    container_name: bookwise-db
+    environment:
+      POSTGRES_DB: bookwise
+      POSTGRES_USER: bookwise
+      POSTGRES_PASSWORD: bookwise
+    ports:
+      - "5432:5432"
+    volumes:
+      - bookwise-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bookwise -d bookwise"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  bookwise-pgdata:
