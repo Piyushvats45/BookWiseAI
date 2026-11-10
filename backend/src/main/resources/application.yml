@@ -44,7 +44,6 @@ spring:
 
 bookwise:
   jwt:
-    # Must be at least 32 characters. Set JWT_SECRET in every real environment.
     secret: ${JWT_SECRET:dev-only-secret-change-me-please-0123456789}
     expiry: 12h
   storage:

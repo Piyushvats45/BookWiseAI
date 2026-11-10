@@ -42,4 +42,5 @@ public class AuthController {
     public UserDto me(@AuthenticationPrincipal Jwt jwt) {
         return auth.me(CurrentUser.id(jwt));
     }
+    
 }
