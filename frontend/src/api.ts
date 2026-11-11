@@ -56,7 +56,7 @@ export const tokenStore = {
     try {
       localStorage.removeItem(TOKEN_KEY)
     } catch {
-      /* nothing to clear */
+
     }
   },
 }
@@ -94,7 +94,7 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
       const body = await res.json()
       if (typeof body.detail === 'string' && body.detail) detail = body.detail
     } catch {
-      /* non-JSON error body */
+
     }
     if (res.status === 401 && token && !path.startsWith('/auth/')) onUnauthorized()
     throw new ApiError(res.status, detail)
