@@ -7,8 +7,6 @@ spring:
     username: ${DB_USER}
     password: ${DB_PASSWORD}
     hikari:
-      # pgvector >= 0.8: keep scanning the HNSW index until enough rows pass the
-      # user_id/book_id metadata filter (otherwise filtered searches can come back short).
       connection-init-sql: SET hnsw.iterative_scan = relaxed_order
 
   jpa:
@@ -25,22 +23,47 @@ spring:
       max-request-size: 55MB
 
   ai:
+    model:
+      chat: openai
+      embedding: ollama
+
     openai:
-      api-key: ${OPENAI_API_KEY}
+      api-key: ${GROQ_API_KEY}
+      base-url: https://api.groq.com/openai/v1
       chat:
         options:
-          model: ${CHAT_MODEL:gpt-4.1-mini}
+          model: ${CHAT_MODEL:openai/gpt-oss-20b}
+
+    ollama:
+      base-url: http://localhost:11434
       embedding:
-        options:
-          model: ${EMBEDDING_MODEL:text-embedding-3-small}
+        model: nomic-embed-text
+
     vectorstore:
       pgvector:
-        # The vector_store table is created by Flyway (V2), not by Spring AI,
-        # so its dimensions/indexes are under our control.
         initialize-schema: false
         index-type: HNSW
         distance-type: COSINE_DISTANCE
-        dimensions: ${EMBEDDING_DIMENSIONS:1536}
+        dimensions: ${EMBEDDING_DIMENSIONS:768}
+
+#   # ai:
+#   #   openai:
+#   #     api-key: ${OPENAI_API_KEY}
+#   #     chat:
+#   #       options:
+#   #         model: ${CHAT_MODEL:gpt-4.1-mini}
+#   #     embedding:
+#   #       options:
+#   #         model: ${EMBEDDING_MODEL:text-embedding-3-small}
+#   #   vectorstore:
+#   #     pgvector:
+#   #       # The vector_store table is created by Flyway (V2), not by Spring AI,
+#   #       # so its dimensions/indexes are under our control.
+#   #       initialize-schema: false
+#   #       index-type: HNSW
+#   #       distance-type: COSINE_DISTANCE
+#   #       dimensions: ${EMBEDDING_DIMENSIONS:1536}
+
 
 bookwise:
   jwt:
