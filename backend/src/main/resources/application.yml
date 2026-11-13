@@ -3,9 +3,9 @@ spring:
     name: bookwise-ai
 
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/bookwise}
+    username: ${DB_USER:bookwise}
+    password: ${DB_PASSWORD:bookwise}
     hikari:
       connection-init-sql: SET hnsw.iterative_scan = relaxed_order
 
@@ -25,7 +25,7 @@ spring:
   ai:
     model:
       chat: openai
-      embedding: ollama
+      embedding: none
 
     openai:
       api-key: ${GROQ_API_KEY}
@@ -34,10 +34,14 @@ spring:
         options:
           model: ${CHAT_MODEL:openai/gpt-oss-20b}
 
-    ollama:
-      base-url: http://localhost:11434
-      embedding:
-        model: nomic-embed-text
+    google:
+      genai:
+        embedding:
+          api-key: ${GEMINI_API_KEY}
+          text:
+            model: gemini-embedding-001
+            dimensions: 768
+            task-type: RETRIEVAL_DOCUMENT
 
     vectorstore:
       pgvector:
